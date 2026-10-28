@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面包兔 · 烤面包与兔同犬的日常</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+    }
+
+    :root {
+      --pink-light: #ffe9f2;
+      --pink: #ff8fb8;
+      --pink-deep: #e8628e;
+      --pink-text: #a5476b;
+      --blue-light: #e8f2ff;
+      --blue: #7fb8ff;
+      --blue-deep: #4d8ee8;
+      --blue-text: #3d6fa5;
+      --ink: #6b4758;
+      --ink-blue: #46607d;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ffe9f2 0%, #ffdfe9 35%, #e6f0ff 65%, #d6e8ff 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+
+    .app {
+      max-width: 1040px;
+      width: 100%;
+      background: rgba(255, 250, 253, 0.78);
+      backdrop-filter: blur(26px);
+      -webkit-backdrop-filter: blur(26px);
+      border-radius: 2.5rem;
+      padding: 2rem 1.8rem 1.8rem;
+      box-shadow: 0 30px 70px -25px rgba(150, 110, 160, 0.45),
+                  0 0 0 1px rgba(255, 255, 255, 0.85) inset;
+      border: 1px solid rgba(255, 210, 228, 0.7);
+    }
+
+    /* ===== 头部 ===== */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .logo { display: flex; align-items: center; gap: 0.9rem; }
+
+    .logo .bunny {
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #fff2f8, #eaf3ff);
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(200, 140, 190, 0.28);
+      border: 2px solid #ffc8dd;
+      animation: float 3.2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .logo h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--pink-text);
+    }
+
+    .logo h1 span {
+      background: linear-gradient(135deg, #ff6b9e, #4d8ee8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+    }
+
+    .logo .sub {
+      font-size: 0.83rem;
+      color: #a86e91;
+      margin-top: 0.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .heart { display: inline-block; animation: heartbeat 1.8s infinite; }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      30% { transform: scale(1.25); }
+      60% { transform: scale(1); }
+    }
+
+    .top-date {
+      background: linear-gradient(135deg, #fff5fa, #f0f7ff);
+      padding: 0.7rem 1.5rem;
+      border-radius: 3rem;
+      color: var(--blue-text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid #d8e8ff;
+      box-shadow: 0 4px 12px rgba(120, 160, 220, 0.15);
+      white-space: nowrap;
+    }
+
+    /* ===== 布局 ===== */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 800px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .app { padding: 1.5rem 1.1rem; }
+      .logo h1 { font-size: 1.45rem; }
+    }
+
+    /* ===== 卡片 ===== */
+    .card {
+      background: rgba(255, 252, 254, 0.9);
+      border-radius: 1.8rem;
+      padding: 1.5rem 1.4rem;
+      border: 1px solid #f0e2f0;
+      box-shadow: 0 12px 28px -14px rgba(180, 130, 180, 0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .card:last-child { margin-bottom: 0; }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 1.1rem;
+      font-weight: 650;
+      color: var(--pink-text);
+    }
+
+    .card-title .emoji { font-size: 1.3rem; }
+
+    /* ===== 按钮 ===== */
+    .btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 3rem;
+      font-weight: 600;
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: 0.18s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn-add {
+      background: linear-gradient(135deg, #ffd3e4, #d8e8ff);
+      color: #8d4784;
+      padding: 0.5rem 1.15rem;
+      border: 1px solid #ffc2d8;
+      box-shadow: 0 4px 10px rgba(220, 140, 190, 0.2);
+    }
+
+    .btn-add:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 7px 16px rgba(200, 130, 190, 0.3);
+    }
+
+    .btn-add:active { transform: scale(0.97); }
+
+    .btn-del {
+      background: transparent;
+      border: none;
+      color: #d3a8c0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+      flex-shrink: 0;
+      font-family: inherit;
+    }
+
+    .btn-del:hover { background: #ffe4f0; color: #d2406f; }
+
+    /* ===== 日历 ===== */
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.1rem;
+    }
+
+    .cal-nav button {
+      background: linear-gradient(135deg, #fff0f8, #eef5ff);
+      border: 1px solid #e3d5ee;
+      color: #7a5a92;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    .cal-nav button:hover {
+      background: linear-gradient(135deg, #ffe2f0, #dcebff);
+      color: #5f4580;
+    }
+
+    .cal-month {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--pink-text);
+    }
+
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .cal-weekdays span {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #9a7fae;
+      font-weight: 600;
+      padding: 0.25rem 0;
+    }
+
+    .cal-weekdays span.weekend { color: var(--pink-deep); }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      color: #84647a;
+      cursor: pointer;
+      position: relative;
+      transition: 0.15s;
+      border: 2px solid transparent;
+      user-select: none;
+    }
+
+    .cal-day:hover { background: #f6ecff; border-color: #d8c4ec; }
+
+    .cal-day.other-month { color: #ddc8da; }
+
+    .cal-day.today {
+      background: linear-gradient(135deg, #ff7ea8, #7fb8ff);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(160, 130, 230, 0.45);
+    }
+
+    .cal-day.selected {
+      border-color: #a86ee0;
+      background: #efe0ff;
+      color: #7443b0;
+      font-weight: 700;
+    }
+
+    .cal-day.today.selected {
+      background: linear-gradient(135deg, #ff6b9e, #5a9bff);
+      color: #fff;
+    }
+
+    /* 有日常记录的蓝点 */
+    .cal-day.has-diary::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--blue-deep);
+    }
+
+    /* 有纪念日的粉点 */
+    .cal-day.has-ann::after {
+      content: '';
+      position: absolute;
+      bottom: 3px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--pink-deep);
+    }
+
+    .cal-day.today.has-diary::before,
+    .cal-day.selected.has-diary::before { background: #fff; }
+
+    .cal-day.today.has-ann::after,
+    .cal-day.selected.has-ann::after { background: #fff; }
+
+    .cal-legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 0.9rem;
+      font-size: 0.72rem;
+      color: #9a86ab;
+    }
+
+    .cal-legend i {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .cal-legend .dot-pink { background: var(--pink-deep); }
+    .cal-legend .dot-blue { background: var(--blue-deep); }
+
+    /* ===== 纪念日列表 ===== */
+    .anniversary-list { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .anniversary-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, #fff5fa, #f6faff);
+      border-radius: 1.2rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid #f0e2f0;
+      transition: 0.15s;
+    }
+
+    .anniversary-item:hover { border-color: #e2cdea; }
+
+    .anniversary-info {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .anniversary-date {
+      background: #ffd9e8;
+      color: #a83f6a;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 0.28rem 0.7rem;
+      border-radius: 2rem;
+      white-space: nowrap;
+    }
+
+    .anniversary-name {
+      font-weight: 600;
+      color: #7d5a86;
+      font-size: 0.92rem;
+      word-break: break-word;
+    }
+
+    .anniversary-days {
+      font-size: 0.72rem;
+      color: #4d7db8;
+      background: #e8f2ff;
+      padding: 0.22rem 0.7rem;
+      border-radius: 2rem;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    /* ===== 日常记录 ===== */
+    .diary-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 0.35rem;
+    }
+
+    .diary-list::-webkit-scrollbar { width: 6px; }
+    .diary-list::-webkit-scrollbar-track { background: #f4ecfa; border-radius: 10px; }
+    .diary-list::-webkit-scrollbar-thumb { background: #ddc4ee; border-radius: 10px; }
+
+    .diary-item {
+      background: linear-gradient(135deg, #fffafd 0%, #f8fbff 100%);
+      border-radius: 1.3rem;
+      padding: 0.95rem 1.1rem;
+      border-left: 4px solid #ffb0cc;
+      border-top: 1px solid #f2e6f4;
+      border-right: 1px solid #f2e6f4;
+      border-bottom: 1px solid #f2e6f4;
+      transition: 0.15s;
+      position: relative;
+    }
+
+    .diary-item:hover { box-shadow: 0 8px 20px -10px rgba(170, 130, 200, 0.35); }
+
+    .diary-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .diary-date {
+      font-size: 0.72rem;
+      color: #6d7fa8;
+      background: #eaf1ff;
+      padding: 0.18rem 0.75rem;
+      border-radius: 2rem;
+      font-weight: 600;
+    }
+
+    .diary-text {
+      font-size: 0.9rem;
+      color: #6b5470;
+      line-height: 1.65;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    /* 图片在记录中的展示 */
+    .diary-images {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.65rem;
+    }
+
+    .diary-img-wrap {
+      position: relative;
+      border-radius: 0.9rem;
+      overflow: hidden;
+      border: 1px solid #e4d8ee;
+      background: #fff;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .diary-img-wrap:hover { transform: scale(1.02); }
+
+    .diary-img-wrap img {
+      display: block;
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+    }
+
+    /* ===== 录音 ===== */
+    .recorder-box {
+      background: linear-gradient(135deg, #fdf4fb, #f2f8ff);
+      border: 1.5px dashed #d9c6ee;
+      border-radius: 1.3rem;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .recorder-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .rec-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #7d5a86;
+    }
+
+    .rec-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #c9b5dc;
+      transition: 0.2s;
+    }
+
+    .rec-dot.recording {
+      background: #ff4d7e;
+      animation: blink 1s infinite;
+      box-shadow: 0 0 0 0 rgba(255, 77, 126, 0.6);
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .rec-timer {
+      font-variant-numeric: tabular-nums;
+      color: #4d7db8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: #eaf2ff;
+      padding: 0.2rem 0.7rem;
+      border-radius: 2rem;
+    }
+
+    .rec-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 2rem;
+      padding: 0.55rem 1.3rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #ff7ea8, #6aa8ff);
+      box-shadow: 0 6px 16px rgba(130, 130, 230, 0.35);
+      transition: 0.18s;
+      font-family: inherit;
+    }
+
+    .rec-btn:hover { transform: translateY(-1px); }
+
+    .rec-btn.stop {
+      background: linear-gradient(135deg, #ff5c8a, #ff8b6b);
+    }
+
+    .rec-tip {
+      margin-top: 0.75rem;
+      font-size: 0.74rem;
+      color: #a58fb5;
+    }
+
+    .audio-entry {
+      background: #f4f9ff;
+      border: 1px solid #dbe8fa;
+      border-radius: 1rem;
+      padding: 0.6rem 0.8rem;
+      margin-top: 0.65rem;
+    }
+
+    .audio-entry audio {
+      width: 100%;
+      height: 38px;
+      border-radius: 20px;
+    }
+
+    /* ===== 图片上传区 ===== */
+    .image-uploader {
+      background: linear-gradient(135deg, #fff6fb, #f3f9ff);
+      border: 1.5px dashed #e4c9e8;
+      border-radius: 1.3rem;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .uploader-label {
+      font-size: 0.8rem;
+      color: #9d6e9d;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .upload-btn {
+      border: 1.5px solid #ffc2d8;
+      background: linear-gradient(135deg, #fff0f8, #eef5ff);
+      color: #8d4784;
+      border-radius: 2rem;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    .upload-btn:hover { background: linear-gradient(135deg, #ffe2f0, #dcebff); }
+
+    .upload-btn:active { transform: scale(0.97); }
+
+    .preview-images {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.8rem;
+    }
+
+    .preview-thumb {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      border-radius: 0.9rem;
+      overflow: hidden;
+      border: 1px solid #e4d8ee;
+      background: #fff;
+    }
+
+    .preview-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-thumb .remove-thumb {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(200, 70, 120, 0.85);
+      color: #fff;
+      font-size: 0.7rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-thumb .remove-thumb:hover { background: #d2406f; }
+
+    /* ===== 图片大图预览 ===== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(50, 25, 45, 0.82);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 2rem;
+      cursor: zoom-out;
+    }
+
+    .lightbox.show { display: flex; }
+
+    .lightbox img {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 1.2rem;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+      border: 4px solid rgba(255, 255, 255, 0.85);
+    }
+
+    /* ===== 空状态 ===== */
+    .empty-tip {
+      text-align: center;
+      color: #b498c2;
+      font-size: 0.85rem;
+      padding: 1.8rem 0.5rem;
+      line-height: 1.8;
+    }
+
+    /* ===== 弹窗 ===== */
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(110, 80, 140, 0.35);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .modal-mask.show { display: flex; }
+
+    .modal {
+      background: linear-gradient(160deg, #fff8fc, #f7fbff);
+      border-radius: 1.8rem;
+      padding: 1.8rem 1.6rem 1.5rem;
+      width: 100%;
+      max-width: 430px;
+      border: 1px solid #ecd9f2;
+      box-shadow: 0 35px 70px -25px rgba(150, 100, 170, 0.55);
+      animation: popIn 0.22s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.94); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal h3 {
+      font-size: 1.15rem;
+      color: var(--pink-text);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal label {
+      display: block;
+      font-size: 0.8rem;
+      color: #9d6e9d;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .modal input[type="text"],
+    .modal input[type="date"],
+    .modal textarea {
+      width: 100%;
+      border: 1.5px solid #e8d9f0;
+      background: #fffcfd;
+      border-radius: 0.9rem;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.9rem;
+      color: #6b4a6b;
+      outline: none;
+      transition: 0.15s;
+      margin-bottom: 1rem;
+      font-family: inherit;
+    }
+
+    .modal input:focus,
+    .modal textarea:focus {
+      border-color: #a983d8;
+      box-shadow: 0 0 0 3px rgba(150, 110, 210, 0.15);
+    }
+
+    .modal textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.55;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: flex-end;
+      margin-top: 0.4rem;
+    }
+
+    .modal-actions .btn {
+      padding: 0.6rem 1.3rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-cancel {
+      background: #fdf1f8;
+      color: #9d6e9d;
+      border: 1px solid #ecd9f2;
+    }
+
+    .btn-cancel:hover { background: #f8e7f4; }
+
+    .btn-confirm {
+      background: linear-gradient(135deg, #ff8fb8, #6aa8ff);
+      color: #fff;
+      border: none;
+      box-shadow: 0 6px 16px rgba(140, 130, 230, 0.4);
+    }
+
+    .btn-confirm:hover { transform: translateY(-1px); }
+
+    /* ===== 底部 ===== */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.6rem;
+      padding-top: 1.1rem;
+      border-top: 1px dashed #e4d4ee;
+      color: #9b86b0;
+      font-size: 0.78rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer strong {
+      background: linear-gradient(135deg, #ff6b9e, #4d8ee8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="logo">
+      <div class="bunny">💞</div>
+      <div>
+        <h1>面包兔 <span>日常</span></h1>
+        <div class="sub"><span class="heart">🍞🐰</span> 烤面包与兔同犬的每一天</div>
+      </div>
+    </div>
+    <div class="top-date" id="topDate">📅 --</div>
+  </div>
+
+  <div class="main-grid">
+    <!-- 左列：日历 + 纪念日 -->
+    <div>
+      <div class="card">
+        <div class="cal-nav">
+          <button id="prevMonth" title="上个月">‹</button>
+          <div class="cal-month" id="calMonth">--</div>
+          <button id="nextMonth" title="下个月">›</button>
+        </div>
+        <div class="cal-weekdays">
+          <span class="weekend">日</span>
+          <span>一</span>
+          <span>二</span>
+          <span>三</span>
+          <span>四</span>
+          <span>五</span>
+          <span class="weekend">六</span>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span><i class="dot-pink"></i>纪念日</span>
+          <span><i class="dot-blue"></i>日常记录</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title"><span class="emoji">🎂</span> 纪念日</div>
+          <button class="btn btn-add" id="addAnnBtn">＋ 添加</button>
+        </div>
+        <div class="anniversary-list" id="anniversaryList"></div>
+      </div>
+    </div>
+
+    <!-- 右列：日常记录 -->
+    <div class="card" style="align-self: start;">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="emoji">📝</span>
+          <span id="diaryTitle">日常记录</span>
+        </div>
+        <button class="btn btn-add" id="addDiaryBtn">＋ 写一条</button>
+      </div>
+      <div class="diary-list" id="diaryList"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>🍞🐰烤面包和兔同犬的专属小站</div>
+    <div>已经一起走过 <strong id="loveDays">0</strong> 天啦 ❤️</div>
+  </div>
+</div>
+
+<!-- 添加纪念日弹窗 -->
+<div class="modal-mask" id="annModal">
+  <div class="modal">
+    <h3>🎂 添加纪念日</h3>
+    <label>纪念日名称</label>
+    <input type="text" id="annNameInput" placeholder="例如：在一起纪念日" maxlength="40">
+    <label>日期</label>
+    <input type="date" id="annDateInput">
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="annCancel">取消</button>
+      <button class="btn btn-confirm" id="annConfirm">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 写日常弹窗（文字 + 图片 + 录音） -->
+<div class="modal-mask" id="diaryModal">
+  <div class="modal">
+    <h3>📝 写一条日常</h3>
+    <label>日期</label>
+    <input type="date" id="diaryDateInput">
+    <label>文字内容（可留空，仅存图片或录音）</label>
+    <textarea id="diaryTextInput" placeholder="今天和兔同犬做了什么呢…" maxlength="500"></textarea>
+
+    <!-- 图片上传区 -->
+    <div class="image-uploader">
+      <div class="uploader-label">🖼️ 添加图片（最多 5 张）</div>
+      <button type="button" class="upload-btn" id="pickImageBtn">＋ 选择图片</button>
+      <input type="file" id="imageInput" accept="image/*" multiple style="display:none;">
+      <div class="preview-images" id="previewImages"></div>
+    </div>
+
+    <!-- 录音区 -->
+    <div class="recorder-box">
+      <div class="recorder-top">
+        <div class="rec-status">
+          <span class="rec-dot" id="recDot"></span>
+          <span id="recStatusText">未开始录音</span>
+        </div>
+        <div class="rec-timer" id="recTimer">00:00</div>
+        <button class="rec-btn" id="recToggleBtn" type="button">● 开始录音</button>
+      </div>
+      <div class="rec-tip" id="recTip">点击「开始录音」捕捉兔同犬的声音吧 🎙️（建议录制前允许麦克风权限）</div>
+      <div id="recPreviewWrap" style="display:none;">
+        <div class="audio-entry">
+          <audio id="recPreview" controls></audio>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="diaryCancel">取消</button>
+      <button class="btn btn-confirm" id="diaryConfirm">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 图片大图预览 -->
+<div class="lightbox" id="lightbox">
+  <img id="lightboxImg" src="" alt="预览">
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ==================== 工具函数 ==================== */
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function fmtDate(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function parseDate(str) {
+    if (!str) return null;
+    var p = str.split('-');
+    if (p.length !== 3) return null;
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  function todayStr() { return fmtDate(new Date()); }
+  function daysBetween(fromStr, toStr) {
+    var a = parseDate(fromStr), b = parseDate(toStr);
+    if (!a || !b) return 0;
+    a.setHours(0,0,0,0); b.setHours(0,0,0,0);
+    return Math.round((b - a) / 86400000);
+  }
+  function escapeHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/[&<>"']/g, function(m) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+  }
+  function uid(prefix) { return prefix + Date.now() + '_' + Math.floor(Math.random() * 10000); }
+
+  /* ==================== 本地存储 ==================== */
+  var store = {
+    get: function(k, def) {
+      try {
+        var v = localStorage.getItem(k);
+        return v ? JSON.parse(v) : def;
+      } catch (e) { return def; }
+    },
+        set: function(k, v) {
+      try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; }
+    }
+  };
+
+  /* ==================== 数据初始化 ==================== */
+  var ANN_KEY = 'breadRabbit_ann_v5';
+  var DIARY_KEY = 'breadRabbit_diary_v5';
+
+  var anniversaries = store.get(ANN_KEY, null);
+  if (!anniversaries) {
+    anniversaries = [
+      { id: 'a1', date: '2024-05-20', name: '在一起纪念日' },
+      { id: 'a2', date: '2025-02-14', name: '第一个情人节' },
+      { id: 'a3', date: '2026-10-25', name: '兔同犬生日' }
+    ];
+    store.set(ANN_KEY, anniversaries);
+  }
+
+  var diaries = store.get(DIARY_KEY, null);
+  if (!diaries) {
+    diaries = [
+      { id: 'd1', date: '2026-10-20', text: '和兔同犬一起烤了小面包，虽然有点焦但是好开心～', audio: null, images: [] },
+      { id: 'd2', date: '2026-10-22', text: '下雨天，窝在沙发上吃烤面包，兔同犬一直抱着我不肯松手。', audio: null, images: [] }
+    ];
+    store.set(DIARY_KEY, diaries);
+  }
+  // 兼容旧数据，补上 images 字段
+  for (var di = 0; di < diaries.length; di++) {
+    if (!diaries[di].images) diaries[di].images = [];
+  }
+
+  function saveAnn() { return store.set(ANN_KEY, anniversaries); }
+  function saveDiary() { return store.set(DIARY_KEY, diaries); }
+
+  /* ==================== 状态 ==================== */
+  var now = new Date();
+  var calYear = now.getFullYear();
+  var calMonth = now.getMonth();
+  var selectedDate = todayStr();
+  var today = todayStr();
+
+  /* ==================== DOM ==================== */
+  var calMonthEl = document.getElementById('calMonth');
+  var calGridEl = document.getElementById('calGrid');
+  var topDateEl = document.getElementById('topDate');
+  var annListEl = document.getElementById('anniversaryList');
+  var diaryListEl = document.getElementById('diaryList');
+  var diaryTitleEl = document.getElementById('diaryTitle');
+  var loveDaysEl = document.getElementById('loveDays');
+
+  /* ==================== 日历 ==================== */
+  function hasDiaryOn(dateStr) {
+    for (var i = 0; i < diaries.length; i++) if (diaries[i].date === dateStr) return true;
+    return false;
+  }
+  function hasAnnOn(dateStr) {
+    for (var i = 0; i < anniversaries.length; i++) if (anniversaries[i].date === dateStr) return true;
+    return false;
+  }
+
+  function renderCalendar() {
+    var monthNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    calMonthEl.textContent = calYear + '年' + monthNames[calMonth];
+
+    var firstDay = new Date(calYear, calMonth, 1);
+    var startWeekday = firstDay.getDay();
+    var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    var prevMonthDays = new Date(calYear, calMonth, 0).getDate();
+
+    var cells = [];
+    for (var i = startWeekday - 1; i >= 0; i--) {
+      var pdNum = prevMonthDays - i;
+      var pm = new Date(calYear, calMonth - 1, pdNum);
+      cells.push({ day: pdNum, date: fmtDate(pm), other: true });
+    }
+    for (var d = 1; d <= daysInMonth; d++) {
+      var cd = new Date(calYear, calMonth, d);
+      cells.push({ day: d, date: fmtDate(cd), other: false });
+    }
+    var rest = 42 - cells.length;
+    for (var j = 1; j <= rest; j++) {
+      var nm = new Date(calYear, calMonth + 1, j);
+      cells.push({ day: j, date: fmtDate(nm), other: true });
+    }
+
+    var html = '';
+    for (var k = 0; k < cells.length; k++) {
+      var c = cells[k];
+      var cls = 'cal-day';
+      if (c.other) cls += ' other-month';
+      if (c.date === today) cls += ' today';
+      if (c.date === selectedDate) cls += ' selected';
+      if (hasDiaryOn(c.date)) cls += ' has-diary';
+      if (hasAnnOn(c.date)) cls += ' has-ann';
+      html += '<div class="' + cls + '" data-date="' + c.date + '">' + c.day + '</div>';
+    }
+    calGridEl.innerHTML = html;
+
+    var dayEls = calGridEl.querySelectorAll('.cal-day');
+    for (var m = 0; m < dayEls.length; m++) {
+      dayEls[m].addEventListener('click', function() {
+        var date = this.getAttribute('data-date');
+        selectedDate = date;
+        var pd = parseDate(date);
+        if (pd && (pd.getMonth() !== calMonth || pd.getFullYear() !== calYear)) {
+          calYear = pd.getFullYear();
+          calMonth = pd.getMonth();
+        }
+        renderCalendar();
+        updateDiaryTitle();
+        renderDiaryList();
+      });
+    }
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', function() {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  });
+  document.getElementById('nextMonth').addEventListener('click', function() {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  });
+
+  /* ==================== 纪念日 ==================== */
+  function renderAnniversaries() {
+    if (anniversaries.length === 0) {
+      annListEl.innerHTML = '<div class="empty-tip">还没有纪念日<br>点击「＋ 添加」记录重要日子 🐰</div>';
+      return;
+    }
+
+    var sorted = anniversaries.slice().sort(function(a, b) {
+      var da = parseDate(a.date), db = parseDate(b.date);
+      if (!da) return 1;
+      if (!db) return -1;
+      return da - db;
+    });
+
+    var html = '';
+    for (var i = 0; i < sorted.length; i++) {
+      var item = sorted[i];
+      var diff = daysBetween(today, item.date);
+      var daysText;
+      if (diff > 0) daysText = '还有 ' + diff + ' 天';
+      else if (diff === 0) daysText = '就是今天 🎉';
+      else daysText = '已经 ' + Math.abs(diff) + ' 天';
+
+      html += '<div class="anniversary-item">' +
+        '<div class="anniversary-info">' +
+          '<span class="anniversary-date">' + escapeHtml(item.date) + '</span>' +
+          '<span class="anniversary-name">' + escapeHtml(item.name) + '</span>' +
+          '<span class="anniversary-days">' + daysText + '</span>' +
+        '</div>' +
+        '<button class="btn-del" data-del-ann="' + item.id + '" title="删除">✕</button>' +
+      '</div>';
+    }
+    annListEl.innerHTML = html;
+
+    var delBtns = annListEl.querySelectorAll('[data-del-ann]');
+    for (var j = 0; j < delBtns.length; j++) {
+      delBtns[j].addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = this.getAttribute('data-del-ann');
+        if (confirm('确定要删除这个纪念日吗？')) {
+          var next = [];
+          for (var t = 0; t < anniversaries.length; t++) {
+            if (anniversaries[t].id !== id) next.push(anniversaries[t]);
+          }
+          anniversaries = next;
+          saveAnn();
+          renderAnniversaries();
+          renderCalendar();
+          updateLoveDays();
+        }
+      });
+    }
+  }
+
+  /* ==================== 日常记录 ==================== */
+  function renderDiaryList() {
+    var filtered = [];
+    for (var i = 0; i < diaries.length; i++) {
+      if (diaries[i].date === selectedDate) filtered.push(diaries[i]);
+    }
+
+    if (filtered.length === 0) {
+      diaryListEl.innerHTML = '<div class="empty-tip">这一天还没有记录呢<br>点击「＋」写下今天的日常吧 </div>';
+      return;
+    }
+
+    var html = '';
+    for (var k = 0; k < filtered.length; k++) {
+      var item = filtered[k];
+      var textHtml = item.text ? '<div class="diary-text">' + escapeHtml(item.text) + '</div>' : '';
+
+      // 图片
+      var imgHtml = '';
+      if (item.images && item.images.length > 0) {
+        imgHtml = '<div class="diary-images">';
+        for (var p = 0; p < item.images.length; p++) {
+          imgHtml += '<div class="diary-img-wrap" data-view-img="' + item.images[p] + '">' +
+                       '<img src="' + item.images[p] + '" alt="日常照片">' +
+                     '</div>';
+        }
+        imgHtml += '</div>';
+      }
+
+      // 录音
+      var audioHtml = '';
+      if (item.audio) {
+        audioHtml = '<div class="audio-entry"><audio controls src="' + item.audio + '"></audio></div>';
+      }
+
+      html += '<div class="diary-item">' +
+        '<div class="diary-meta">' +
+          '<span class="diary-date">' + escapeHtml(item.date) + '</span>' +
+          '<button class="btn-del" data-del-diary="' + item.id + '" title="删除">✕</button>' +
+        '</div>' +
+        textHtml + imgHtml + audioHtml +
+      '</div>';
+    }
+    diaryListEl.innerHTML = html;
+
+    // 删除记录
+    var delBtns = diaryListEl.querySelectorAll('[data-del-diary]');
+    for (var m = 0; m < delBtns.length; m++) {
+      delBtns[m].addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = this.getAttribute('data-del-diary');
+        if (confirm('确定要删除这条记录吗？')) {
+          var next = [];
+          for (var t = 0; t < diaries.length; t++) {
+            if (diaries[t].id !== id) next.push(diaries[t]);
+          }
+          diaries = next;
+          saveDiary();
+          renderDiaryList();
+          renderCalendar();
+        }
+      });
+    }
+
+    // 点击图片看大图
+    var viewImgs = diaryListEl.querySelectorAll('[data-view-img]');
+    for (var v = 0; v < viewImgs.length; v++) {
+      viewImgs[v].addEventListener('click', function() {
+        var src = this.getAttribute('data-view-img');
+        openLightbox(src);
+      });
+    }
+  }
+
+  function updateDiaryTitle() {
+    var pd = parseDate(selectedDate);
+    if (pd) {
+      var weekNames = ['周日','周一','周二','周三','周四','周五','周六'];
+      diaryTitleEl.textContent = '日常记录 · ' + (pd.getMonth() + 1) + '月' + pd.getDate() + '日 ' + weekNames[pd.getDay()];
+    } else {
+      diaryTitleEl.textContent = '日常记录';
+    }
+  }
+
+  /* ==================== 顶部信息 ==================== */
+  function updateTopDate() {
+    var d = new Date();
+    var weekNames = ['周日','周一','周二','周三','周四','周五','周六'];
+    topDateEl.textContent = '📅 ' + d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + weekNames[d.getDay()];
+  }
+
+  function updateLoveDays() {
+    if (anniversaries.length === 0) {
+      loveDaysEl.textContent = '0';
+      return;
+    }
+    var earliest = anniversaries[0];
+    for (var i = 1; i < anniversaries.length; i++) {
+      var d1 = parseDate(earliest.date);
+      var d2 = parseDate(anniversaries[i].date);
+      if (!d1) { earliest = anniversaries[i]; continue; }
+      if (d2 && d2 < d1) earliest = anniversaries[i];
+    }
+    var days = daysBetween(earliest.date, today);
+    loveDaysEl.textContent = days >= 0 ? days : 0;
+  }
+
+  /* ==================== 弹窗 ==================== */
+  function openModal(id) { document.getElementById(id).classList.add('show'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+  /* ==================== 大图预览 ==================== */
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightboxImg');
+  function openLightbox(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add('show');
+  }
+  lightbox.addEventListener('click', function() {
+    lightbox.classList.remove('show');
+    lightboxImg.src = '';
+  });
+
+  /* ==================== 图片上传 ==================== */
+  var pickedImages = [];          // 当前弹窗中待保存的图片（DataURL 数组）
+  var MAX_IMAGES = 5;
+  var MAX_IMG_SIZE = 1400;        // 压缩后最长边像素
+
+  var imageInput = document.getElementById('imageInput');
+  var pickImageBtn = document.getElementById('pickImageBtn');
+  var previewImagesEl = document.getElementById('previewImages');
+
+  function renderPreviewImages() {
+    var html = '';
+    for (var i = 0; i < pickedImages.length; i++) {
+      html += '<div class="preview-thumb">' +
+                '<img src="' + pickedImages[i] + '" alt="预览">' +
+                '<button type="button" class="remove-thumb" data-rm-img="' + i + '">✕</button>' +
+              '</div>';
+    }
+    previewImagesEl.innerHTML = html;
+
+    var rmBtns = previewImagesEl.querySelectorAll('[data-rm-img]');
+    for (var j = 0; j < rmBtns.length; j++) {
+      rmBtns[j].addEventListener('click', function() {
+        var idx = parseInt(this.getAttribute('data-rm-img'), 10);
+        if (!isNaN(idx)) {
+          pickedImages.splice(idx, 1);
+          renderPreviewImages();
+        }
+      });
+    }
+  }
+
+  // 图片压缩：用 canvas 缩放到合适尺寸，转 JPEG，减小 localStorage 压力
+  function compressImage(file, callback) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var img = new Image();
+      img.onload = function() {
+        var w = img.width, h = img.height;
+        if (w > MAX_IMG_SIZE || h > MAX_IMG_SIZE) {
+          if (w >= h) { h = Math.round(h * MAX_IMG_SIZE / w); w = MAX_IMG_SIZE; }
+          else { w = Math.round(w * MAX_IMG_SIZE / h); h = MAX_IMG_SIZE; }
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        try {
+          var dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+          callback(dataUrl);
+        } catch (e) {
+          callback(ev.target.result); // 兜底用原图
+        }
+      };
+      img.onerror = function() { callback(null); };
+      img.src = ev.target.result;
+    };
+    reader.onerror = function() { callback(null); };
+    reader.readAsDataURL(file);
+  }
+
+  pickImageBtn.addEventListener('click', function() {
+    imageInput.click();
+  });
+
+  imageInput.addEventListener('change', function() {
+    var files = this.files;
+    if (!files || files.length === 0) return;
+
+    var remain = MAX_IMAGES - pickedImages.length;
+    if (remain <= 0) {
+      alert('最多只能添加 ' + MAX_IMAGES + ' 张图片哦～');
+      this.value = '';
+      return;
+    }
+
+    var toLoad = [];
+    for (var i = 0; i < files.length && toLoad.length < remain; i++) {
+      if (files[i].type.indexOf('image/') === 0) toLoad.push(files[i]);
+    }
+
+    if (toLoad.length === 0) { this.value = ''; return; }
+
+    var loadedCount = 0;
+    var self = this;
+    toLoad.forEach(function(file) {
+      compressImage(file, function(dataUrl) {
+        if (dataUrl) pickedImages.push(dataUrl);
+        loadedCount++;
+        if (loadedCount === toLoad.length) {
+          renderPreviewImages();
+          self.value = '';
+        }
+      });
+    });
+  });
+
+  /* ==================== 录音 ==================== */
+  var mediaRecorder = null;
+  var recordedChunks = [];
+  var recordTimer = null;
+  var recordSeconds = 0;
+  var currentAudioDataUrl = null;
+  var stream = null;
+
+  var recDot = document.getElementById('recDot');
+  var recStatusText = document.getElementById('recStatusText');
+  var recTimer = document.getElementById('recTimer');
+  var recToggleBtn = document.getElementById('recToggleBtn');
+  var recTip = document.getElementById('recTip');
+  var recPreviewWrap = document.getElementById('recPreviewWrap');
+  var recPreview = document.getElementById('recPreview');
+
+  function fmtTime(sec) {
+    return pad(Math.floor(sec / 60)) + ':' + pad(sec % 60);
+  }
+
+  function resetRecorderUI() {
+    recDot.classList.remove('recording');
+    recStatusText.textContent = '未开始录音';
+    recTimer.textContent = '00:00';
+    recToggleBtn.textContent = '● 开始录音';
+    recToggleBtn.classList.remove('stop');
+    recPreviewWrap.style.display = 'none';
+    recPreview.removeAttribute('src');
+    recTip.textContent = '点击「开始录音」捕捉兔同犬的声音吧 🎙️（建议录制前允许麦克风权限）';
+  }
+
+  function stopRecording() {
+    if (recordTimer) { clearInterval(recordTimer); recordTimer = null; }
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      try { mediaRecorder.stop(); } catch (e) {}
+    }
+    if (stream) {
+      try { stream.getTracks().forEach(function(t) { t.stop(); }); } catch (e) {}
+      stream = null;
+    }
+    recDot.classList.remove('recording');
+    recToggleBtn.classList.remove('stop');
+    recToggleBtn.textContent = '● 重新录音';
+  }
+
+  recToggleBtn.addEventListener('click', function() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      stopRecording();
+      return;
+    }
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert('当前浏览器不支持录音功能，建议使用 Chrome / Edge 等现代浏览器。');
+      return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(s) {
+      stream = s;
+      recordedChunks = [];
+      currentAudioDataUrl = null;
+      recPreviewWrap.style.display = 'none';
+
+      var options = {};
+      if (window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported('audio/webm')) {
+        options.mimeType = 'audio/webm';
+      }
+      try {
+        mediaRecorder = new MediaRecorder(s, options);
+      } catch (err) {
+        alert('无法启动录音器：' + err.message);
+        s.getTracks().forEach(function(t) { t.stop(); });
+        return;
+      }
+
+      mediaRecorder.ondataavailable = function(e) {
+        if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = function() {
+        if (recordedChunks.length > 0) {
+          var mime = (mediaRecorder && mediaRecorder.mimeType) ? mediaRecorder.mimeType : 'audio/webm';
+          var blob = new Blob(recordedChunks, { type: mime });
+          var reader = new FileReader();
+          reader.onloadend = function() {
+            currentAudioDataUrl = reader.result;
+            recPreview.src = currentAudioDataUrl;
+            recPreviewWrap.style.display = 'block';
+            recStatusText.textContent = '录音完成';
+            recTip.textContent = '录音已就绪，保存后会一起存入这一天的记录 ✅';
+          };
+          reader.readAsDataURL(blob);
+        }
+      };
+
+      mediaRecorder.start();
+      recordSeconds = 0;
+      recTimer.textContent = '00:00';
+      recDot.classList.add('recording');
+      recStatusText.textContent = '录音中…';
+      recToggleBtn.textContent = '■ 停止录音';
+      recToggleBtn.classList.add('stop');
+      recTip.textContent = '正在录音，点击「停止录音」结束 🎙️';
+
+      if (recordTimer) clearInterval(recordTimer);
+      recordTimer = setInterval(function() {
+        recordSeconds++;
+        recTimer.textContent = fmtTime(recordSeconds);
+        if (recordSeconds >= 60) {
+          stopRecording();
+          recTip.textContent = '已达到 60 秒上限，录音自动停止。';
+        }
+      }, 1000);
+
+    }).catch(function(err) {
+      var msg = '无法访问麦克风。';
+      if (err && err.name === 'NotAllowedError') msg = '你拒绝了麦克风权限，请在浏览器设置中允许后重试。';
+      else if (err && err.name === 'NotFoundError') msg = '没有找到可用的麦克风设备。';
+      alert(msg);
+      recTip.textContent = '录音失败，可只保存文字或图片。';
+    });
+  });
+
+  /* ==================== 添加纪念日 ==================== */
+  var annNameInput = document.getElementById('annNameInput');
+  var annDateInput = document.getElementById('annDateInput');
+
+  document.getElementById('addAnnBtn').addEventListener('click', function() {
+    annNameInput.value = '';
+    annDateInput.value = selectedDate || todayStr();
+    openModal('annModal');
+    setTimeout(function() { annNameInput.focus(); }, 60);
+  });
+
+  document.getElementById('annCancel').addEventListener('click', function() {
+    closeModal('annModal');
+  });
+
+  document.getElementById('annConfirm').addEventListener('click', function() {
+    var name = annNameInput.value.trim();
+    var dateStr = annDateInput.value;
+
+    if (!dateStr) { alert('请选择纪念日日期～'); return; }
+    var dateObj = parseDate(dateStr);
+    if (!dateObj) { alert('日期格式不正确，请重新选择。'); return; }
+    if (!name) { alert('请填写纪念日名称～'); return; }
+
+    anniversaries.push({ id: uid('a'), date: fmtDate(dateObj), name: name });
+    saveAnn();
+    renderAnniversaries();
+    renderCalendar();
+    updateLoveDays();
+    closeModal('annModal');
+  });
+
+  /* ==================== 写日常（文字 + 图片 + 录音） ==================== */
+  var diaryDateInput = document.getElementById('diaryDateInput');
+  var diaryTextInput = document.getElementById('diaryTextInput');
+
+  document.getElementById('addDiaryBtn').addEventListener('click', function() {
+    diaryTextInput.value = '';
+    diaryDateInput.value = selectedDate || todayStr();
+
+    if (mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+    currentAudioDataUrl = null;
+    pickedImages = [];
+    renderPreviewImages();
+    resetRecorderUI();
+
+    openModal('diaryModal');
+    setTimeout(function() { diaryTextInput.focus(); }, 60);
+  });
+
+  function abortDiaryModal() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+    currentAudioDataUrl = null;
+    pickedImages = [];
+    renderPreviewImages();
+    resetRecorderUI();
+    closeModal('diaryModal');
+  }
+
+  document.getElementById('diaryCancel').addEventListener('click', abortDiaryModal);
+
+  document.getElementById('diaryConfirm').addEventListener('click', function() {
+    var text = diaryTextInput.value.trim();
+    var dateStr = diaryDateInput.value;
+
+    if (!dateStr) { alert('请选择记录日期～'); return; }
+    var dateObj = parseDate(dateStr);
+    if (!dateObj) { alert('日期格式不正确，请重新选择。'); return; }
+
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      alert('还在录音中，请先点击「停止录音」。');
+      return;
+    }
+
+    if (!text && pickedImages.length === 0 && !currentAudioDataUrl) {
+      alert('请至少填写文字、添加图片或录一段音频～');
+      return;
+    }
+
+    // 先备份，便于保存失败时回滚
+    var backupDiaries = diaries.slice();
+
+    diaries.push({
+      id: uid('d'),
+      date: fmtDate(dateObj),
+      text: text,
+      images: pickedImages.slice(),
+      audio: currentAudioDataUrl || null
+    });
+
+    if (!saveDiary()) {
+      diaries = backupDiaries;
+      alert('保存失败：本地存储空间不足（图片/录音占用较大）。\n建议减少图片数量、删除部分旧记录，或换浏览器重试。');
+      return;
+    }
+
+    selectedDate = fmtDate(dateObj);
+    calYear = dateObj.getFullYear();
+    calMonth = dateObj.getMonth();
+
+    renderDiaryList();
+    renderCalendar();
+    updateDiaryTitle();
+
+    currentAudioDataUrl = null;
+    pickedImages = [];
+    renderPreviewImages();
+    resetRecorderUI();
+    closeModal('diaryModal');
+  });
+
+  /* 点击遮罩关闭弹窗 */
+  var masks = document.querySelectorAll('.modal-mask');
+  for (var n = 0; n < masks.length; n++) {
+    masks[n].addEventListener('click', function(e) {
+      if (e.target === this) {
+        if (this.id === 'diaryModal') abortDiaryModal();
+        else closeModal(this.id);
+      }
+    });
+  }
+
+  /* Esc 关闭弹窗 */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      if (lightbox.classList.contains('show')) {
+        lightbox.classList.remove('show');
+        lightboxImg.src = '';
+        return;
+      }
+      var openMasks = document.querySelectorAll('.modal-mask.show');
+      for (var q = 0; q < openMasks.length; q++) {
+        if (openMasks[q].id === 'diaryModal') abortDiaryModal();
+        else closeModal(openMasks[q].id);
+      }
+    }
+  });
+
+  /* ==================== 初始化 ==================== */
+  updateTopDate();
+  updateDiaryTitle();
+  renderCalendar();
+  renderAnniversaries();
+  renderDiaryList();
+  updateLoveDays();
+  resetRecorderUI();
+  renderPreviewImages();
+
+  /* 跨日自动刷新 */
+  setInterval(function() {
+    var newToday = todayStr();
+    if (newToday !== today) {
+      today = newToday;
+      updateTopDate();
+      renderCalendar();
+      renderAnniversaries();
+      updateLoveDays();
+    }
+  }, 60000);
+
+})();
+</script>
+</body>
+</html>
